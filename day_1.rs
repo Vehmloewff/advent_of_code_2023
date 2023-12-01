@@ -1,3 +1,5 @@
+use crate::utils::{into_lines, sum};
+
 pub fn trebuchet(input: String) {
     let lines = into_lines(input);
 
@@ -47,22 +49,4 @@ fn better_decode_calibration_value(input: &String) -> u32 {
         .replace("nine", "nine9nine");
 
     decode_calibration_value(&new_input)
-}
-
-fn into_lines(input: String) -> Vec<String> {
-    input
-        .split("\n")
-        .map(|line| line.trim().to_owned())
-        .filter(|line| line.len() > 0)
-        .collect()
-}
-
-fn sum(items: Vec<u32>) -> u32 {
-    let mut acc = 0;
-
-    for item in items {
-        acc += item;
-    }
-
-    acc
 }

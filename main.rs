@@ -1,22 +1,47 @@
+mod cache;
+mod utils;
+
 mod day_1;
 
+use cache::InputsCache;
 use clap::Parser;
 use day_1::trebuchet;
 use reqwest::{Client, Method};
 use std::env;
 
 #[derive(Parser)]
-#[command(bin_name = "cargo run --")]
+#[command(bin_name = ".run")]
 struct ProgramArgs {
-    day: usize,
+    day: u32,
 }
 
 #[tokio::main]
 async fn main() {
     let args = ProgramArgs::parse();
     let day = args.day;
-    let session = env::var("ADVENT_OF_CODE_SESSION").expect("Expected an ADVENT_OF_CODE");
-    let input = Client::new()
+    let session = env::var("ADVENT_OF_CODE_SESSION").expect("Expected an ADVENT_OF_CODE_SESSION");
+    let cache = InputsCache::new().await;
+
+    let input = match cache.get(day).await {
+        Some(input) => input,
+        None => {
+            let input = fetch_input(day, session).await;
+            cache.set(day, input.clone()).await;
+
+            input
+        }
+    };
+
+    match args.day {
+        1 => trebuchet(input),
+        _ => println!("Unknown day"),
+    }
+}
+
+async fn fetch_input(day: u32, session: String) -> String {
+    println!("Fetching inputs for day {day}...");
+
+    Client::new()
         .request(
             Method::GET,
             format!("https://adventofcode.com/2023/day/{day}/input"),
@@ -27,10 +52,5 @@ async fn main() {
         .unwrap()
         .text()
         .await
-        .unwrap();
-
-    match args.day {
-        1 => trebuchet(input),
-        _ => println!("Unknown day"),
-    }
+        .unwrap()
 }
