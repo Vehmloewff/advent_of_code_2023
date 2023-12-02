@@ -2,10 +2,12 @@ mod cache;
 mod utils;
 
 mod day_1;
+mod day_2;
 
 use cache::InputsCache;
 use clap::Parser;
 use day_1::trebuchet;
+use day_2::cube_conundrum;
 use reqwest::{Client, Method};
 use std::env;
 
@@ -34,6 +36,7 @@ async fn main() {
 
     match args.day {
         1 => trebuchet(input),
+        2 => cube_conundrum(input),
         _ => println!("Unknown day"),
     }
 }
