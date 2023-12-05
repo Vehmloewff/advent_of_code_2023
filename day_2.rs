@@ -16,12 +16,12 @@ pub fn cube_conundrum(input: String) {
         .iter()
         .filter(|game| game.is_playable_with(&limit))
         .map(|game| game.id)
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     let lowest_drawing_powers = games
         .iter()
         .map(|game| game.get_lowest_counts().power())
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     println!(
         "playable_games_sum={} lowest_drawing_powers_sum={}",
@@ -32,7 +32,7 @@ pub fn cube_conundrum(input: String) {
 
 #[derive(Debug, Clone)]
 struct Game {
-    id: u32,
+    id: u64,
     drawings: Vec<Drawing>,
 }
 
@@ -51,7 +51,7 @@ impl Game {
             .collect::<Vec<String>>()
             .last()
             .unwrap()
-            .parse::<u32>()
+            .parse::<u64>()
             .unwrap();
 
         let drawings = parts
@@ -82,30 +82,30 @@ impl Game {
                 .map(|drawing| drawing.red)
                 .filter(|count| count.is_some())
                 .map(|count| count.unwrap())
-                .collect::<Vec<u32>>())),
+                .collect::<Vec<u64>>())),
             blue: Some(max(self
                 .drawings
                 .iter()
                 .map(|drawing| drawing.blue)
                 .filter(|count| count.is_some())
                 .map(|count| count.unwrap())
-                .collect::<Vec<u32>>())),
+                .collect::<Vec<u64>>())),
             green: Some(max(self
                 .drawings
                 .iter()
                 .map(|drawing| drawing.green)
                 .filter(|count| count.is_some())
                 .map(|count| count.unwrap().clone())
-                .collect::<Vec<u32>>())),
+                .collect::<Vec<u64>>())),
         }
     }
 }
 
 #[derive(Debug, Clone)]
 struct Drawing {
-    red: Option<u32>,
-    blue: Option<u32>,
-    green: Option<u32>,
+    red: Option<u64>,
+    blue: Option<u64>,
+    green: Option<u64>,
 }
 
 impl Drawing {
@@ -125,7 +125,7 @@ impl Drawing {
                 .map(|inner| inner.trim().to_owned())
                 .collect::<Vec<String>>();
 
-            let count = sections.first().unwrap().parse::<u32>().unwrap();
+            let count = sections.first().unwrap().parse::<u64>().unwrap();
             let color = sections.last().unwrap().as_str();
 
             match color {
@@ -143,7 +143,7 @@ impl Drawing {
         self.red <= limit.red && self.green <= limit.green && self.blue <= limit.blue
     }
 
-    fn power(&self) -> u32 {
+    fn power(&self) -> u64 {
         let mut items = Vec::new();
 
         if self.blue.is_some() {

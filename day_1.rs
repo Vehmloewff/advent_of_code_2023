@@ -6,12 +6,12 @@ pub fn trebuchet(input: String) {
     let values = lines
         .iter()
         .map(|line| decode_calibration_value(line))
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     let better_values = lines
         .iter()
         .map(|line| better_decode_calibration_value(line))
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     let calibration_sum = sum(values);
     let better_calibration_sum = sum(better_values);
@@ -19,7 +19,7 @@ pub fn trebuchet(input: String) {
     println!("sum={calibration_sum} better_sum={better_calibration_sum}");
 }
 
-fn decode_calibration_value(input: &String) -> u32 {
+fn decode_calibration_value(input: &String) -> u64 {
     let characters = input
         .chars()
         .filter(|character| character.is_numeric())
@@ -31,12 +31,12 @@ fn decode_calibration_value(input: &String) -> u32 {
         characters.last().unwrap()
     );
 
-    joined.parse::<u32>().unwrap()
+    joined.parse::<u64>().unwrap()
 }
 
-fn better_decode_calibration_value(input: &String) -> u32 {
-	// We do these weird double-replacements because we don't want to mess up any existing words
-	// For example, removing a nine may mess up an eight: nineight
+fn better_decode_calibration_value(input: &String) -> u64 {
+    // We do these weird double-replacements because we don't want to mess up any existing words
+    // For example, removing a nine may mess up an eight: nineight
     let new_input = input
         .replace("one", "one1one")
         .replace("two", "two2two")

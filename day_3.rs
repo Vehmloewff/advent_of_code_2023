@@ -7,13 +7,13 @@ pub fn gear_ratios(input: String) {
         .get_parts_with_symbols()
         .iter()
         .map(|part| part.number)
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     let gear_ratios = schematic
         .get_gears_with_parts()
         .iter()
         .map(|gear| gear.get_ratio())
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     println!(
         "valid_part_numbers={} gear_ratios={}",
@@ -33,8 +33,8 @@ impl Schematic {
         let mut current_number_chars = Vec::new();
         let mut part_numbers = Vec::new();
         let mut symbols = Vec::new();
-        let mut line_number: u32 = 0;
-        let mut col_number: u32 = 0;
+        let mut line_number: u64 = 0;
+        let mut col_number: u64 = 0;
 
         for character in input.chars() {
             if character == ' ' || character == '\t' {
@@ -56,8 +56,8 @@ impl Schematic {
                     .collect::<Vec<String>>()
                     .join("");
 
-                let number = joined.parse::<u32>().unwrap();
-                let start_col = col_number - joined.len() as u32;
+                let number = joined.parse::<u64>().unwrap();
+                let start_col = col_number - joined.len() as u64;
 
                 part_numbers.push(PartNumber {
                     number,
@@ -142,10 +142,10 @@ impl Schematic {
 
 #[derive(Debug, Clone)]
 struct PartNumber {
-    line: u32,
-    start_col: u32,
-    end_col: u32,
-    number: u32,
+    line: u64,
+    start_col: u64,
+    end_col: u64,
+    number: u64,
 }
 
 impl PartNumber {
@@ -163,8 +163,8 @@ impl PartNumber {
 
 #[derive(Debug, Clone)]
 struct Symbol {
-    line: u32,
-    col: u32,
+    line: u64,
+    col: u64,
     could_be_gear: bool,
 }
 
@@ -176,7 +176,7 @@ struct Gear<'a> {
 }
 
 impl Gear<'_> {
-    fn get_ratio(&self) -> u32 {
+    fn get_ratio(&self) -> u64 {
         self.part_1.number * self.part_2.number
     }
 }

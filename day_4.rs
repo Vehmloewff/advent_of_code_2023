@@ -11,7 +11,7 @@ pub fn scratchcards(input: String) {
     let scores = scratchcards
         .iter()
         .map(|scratchcard| scratchcard.get_score())
-        .collect::<Vec<u32>>();
+        .collect::<Vec<u64>>();
 
     let mut pad = Scratchpad::new(scratchcards);
     pad.copy_scratchcards();
@@ -24,9 +24,9 @@ pub fn scratchcards(input: String) {
 }
 
 pub struct Scratchpad {
-    first_card: u32,
-    last_card: u32,
-    scratchcards: HashMap<u32, (Scratchcard, u32)>,
+    first_card: u64,
+    last_card: u64,
+    scratchcards: HashMap<u64, (Scratchcard, u64)>,
 }
 
 impl Scratchpad {
@@ -46,11 +46,11 @@ impl Scratchpad {
         }
     }
 
-    pub fn increment_by(&mut self, card_number: u32, amount: u32) {
+    pub fn increment_by(&mut self, card_number: u64, amount: u64) {
         self.scratchcards.get_mut(&card_number).unwrap().1 += amount;
     }
 
-    pub fn register_points(&mut self, card_number: u32, points: u32, multiplier: u32) {
+    pub fn register_points(&mut self, card_number: u64, points: u64, multiplier: u64) {
         let start_copy = card_number + 1;
         let end_copy = card_number + points + 1;
 
@@ -67,7 +67,7 @@ impl Scratchpad {
         }
     }
 
-    pub fn get_total_cards(&self) -> u32 {
+    pub fn get_total_cards(&self) -> u64 {
         let mut amount = 0;
 
         for (_, count) in self.scratchcards.values() {
@@ -79,9 +79,9 @@ impl Scratchpad {
 }
 
 pub struct Scratchcard {
-    card_number: u32,
-    winning_numbers: Vec<u32>,
-    real_numbers: Vec<u32>,
+    card_number: u64,
+    winning_numbers: Vec<u64>,
+    real_numbers: Vec<u64>,
 }
 
 impl Scratchcard {
@@ -93,7 +93,7 @@ impl Scratchcard {
             .split(" ")
             .last()
             .unwrap()
-            .parse::<u32>()
+            .parse::<u64>()
             .unwrap();
 
         let card_contents = card_basics.last().unwrap().to_owned();
@@ -105,8 +105,8 @@ impl Scratchcard {
             .to_owned()
             .split(" ")
             .filter(|item| !item.is_empty())
-            .map(|item| item.trim().parse::<u32>().unwrap())
-            .collect::<Vec<u32>>();
+            .map(|item| item.trim().parse::<u64>().unwrap())
+            .collect::<Vec<u64>>();
 
         let real_numbers = sections
             .last()
@@ -114,8 +114,8 @@ impl Scratchcard {
             .to_owned()
             .split(" ")
             .filter(|item| !item.is_empty())
-            .map(|item| item.trim().parse::<u32>().unwrap())
-            .collect::<Vec<u32>>();
+            .map(|item| item.trim().parse::<u64>().unwrap())
+            .collect::<Vec<u64>>();
 
         Scratchcard {
             card_number,
@@ -124,7 +124,7 @@ impl Scratchcard {
         }
     }
 
-    fn get_score(&self) -> u32 {
+    fn get_score(&self) -> u64 {
         let mut winning_count = 0;
 
         for real_number in &self.real_numbers {
@@ -140,7 +140,7 @@ impl Scratchcard {
         winning_count
     }
 
-    fn get_matches(&self) -> u32 {
+    fn get_matches(&self) -> u64 {
         let mut winning_count = 0;
 
         for real_number in &self.real_numbers {

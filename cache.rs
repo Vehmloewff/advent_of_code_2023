@@ -18,13 +18,13 @@ impl InputsCache {
         InputsCache { path }
     }
 
-    pub async fn get(&self, day: u32) -> Option<String> {
+    pub async fn get(&self, day: u64) -> Option<String> {
         read_to_string(self.path.join(format!("day_{day}.txt")))
             .await
             .ok()
     }
 
-    pub async fn set(&self, day: u32, text: String) {
+    pub async fn set(&self, day: u64, text: String) {
         write(self.path.join(format!("day_{day}.txt")), text)
             .await
             .unwrap()
