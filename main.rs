@@ -46,6 +46,7 @@ async fn main() {
 			3 => gear_ratios(input),
 			4 => scratchcards(input),
 			5 => seeds(input),
+			6 => wait_for_it(input),
 			_ => println!("Unknown day"),
 		}
 
