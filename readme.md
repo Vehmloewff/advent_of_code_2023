@@ -22,7 +22,7 @@ Or, if you want to make your life easier, add this to your fish config so that t
 
 ```shell
 if cat tasks.fish &>/dev/null
-	source tasks.fish
+    source tasks.fish
 end
 ```
 
@@ -31,3 +31,11 @@ Then, run the exercises for a particular day.
 ```shell
 .run 23
 ```
+
+You can also build an executable binary particular day (embeds the input).
+
+```shell
+.run --build 23
+```
+
+For day 23, the executable will be located at `target/day_23_bin`.
