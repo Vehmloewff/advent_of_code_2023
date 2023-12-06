@@ -1,10 +1,13 @@
 [package]
-name = "adventofcode2023"
+name = "advent_of_code_2023"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+path = "lib.rs"
+
 [[bin]]
-name = "adventofcode2023"
+name = "advent_of_code_2023"
 path = "main.rs"
 
 [dependencies]

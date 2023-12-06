@@ -1,26 +1,21 @@
+mod build_bin;
 mod cache;
 mod utils;
 
-mod day_1;
-mod day_2;
-mod day_3;
-mod day_4;
-mod day_5;
-
+use advent_of_code_2023::*;
+use build_bin::build_bin;
 use cache::InputsCache;
 use clap::Parser;
-use day_1::trebuchet;
-use day_2::cube_conundrum;
-use day_3::gear_ratios;
-use day_4::scratchcards;
-use day_5::seeds;
 use reqwest::{Client, Method};
-use std::env;
+use std::{env, time::Instant};
 
 #[derive(Parser)]
 #[command(bin_name = ".run")]
 struct ProgramArgs {
 	day: u64,
+
+	#[arg(long)]
+	build: bool,
 }
 
 #[tokio::main]
@@ -40,13 +35,22 @@ async fn main() {
 		}
 	};
 
-	match args.day {
-		1 => trebuchet(input),
-		2 => cube_conundrum(input),
-		3 => gear_ratios(input),
-		4 => scratchcards(input),
-		5 => seeds(input),
-		_ => println!("Unknown day"),
+	if args.build {
+		build_bin(day, input).await
+	} else {
+		let start = Instant::now();
+
+		match args.day {
+			1 => trebuchet(input),
+			2 => cube_conundrum(input),
+			3 => gear_ratios(input),
+			4 => scratchcards(input),
+			5 => seeds(input),
+			_ => println!("Unknown day"),
+		}
+
+		let ms = start.elapsed().as_millis();
+		println!("Executed day {day} in {ms}ms");
 	}
 }
 
