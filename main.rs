@@ -47,6 +47,7 @@ async fn main() {
 			4 => scratchcards(input),
 			5 => seeds(input),
 			6 => wait_for_it(input),
+			7 => camel_cards(input),
 			_ => println!("Unknown day"),
 		}
 
