@@ -48,6 +48,7 @@ async fn main() {
 			5 => seeds(input),
 			6 => wait_for_it(input),
 			7 => camel_cards(input),
+			8 => haunted_wasteland(input),
 			_ => println!("Unknown day"),
 		}
 

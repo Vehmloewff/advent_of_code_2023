@@ -1,3 +1,5 @@
+use std::ops::Mul;
+
 pub fn into_lines(input: String) -> Vec<String> {
 	input
 		.split("\n")
@@ -16,7 +18,7 @@ pub fn sum(items: Vec<u64>) -> u64 {
 	acc
 }
 
-pub fn mul(items: Vec<u64>) -> u64 {
+pub fn mul<N: Mul<Output = N>>(items: Vec<N>) -> N {
 	let mut acc = None;
 
 	for item in items {
@@ -92,5 +94,49 @@ pub fn safe_sub(a: u64, b: u64) -> u64 {
 		0
 	} else {
 		a - b
+	}
+}
+
+pub fn get_factors(number: u64) -> Vec<u64> {
+	(1..number + 1).into_iter().filter(|&x| number % x == 0).collect::<Vec<u64>>()
+}
+
+fn get_common_numbers(mut numbers: Vec<Vec<u64>>) -> Vec<u64> {
+	let driver = numbers.pop().unwrap();
+	let mut common = Vec::new();
+
+	for number in driver {
+		let mut is_missing = false;
+
+		for list in &numbers {
+			if !list.contains(&number) {
+				is_missing = true
+			}
+		}
+
+		if is_missing {
+			common.push(number)
+		}
+	}
+
+	common
+}
+
+pub fn least_common_multiple(numbers: Vec<u64>) -> u64 {
+	let mut answer = numbers.get(0).unwrap().clone();
+
+	for index in 1..numbers.len() {
+		let number = numbers.get(index).unwrap().clone();
+		answer = (number * answer) / (greatest_common_factor(number, answer));
+	}
+
+	answer
+}
+
+pub fn greatest_common_factor(a: u64, b: u64) -> u64 {
+	if b == 0 {
+		a
+	} else {
+		greatest_common_factor(b, a % b)
 	}
 }
